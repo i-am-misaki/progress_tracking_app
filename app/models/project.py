@@ -1,5 +1,5 @@
-from sqlalchemy import Column, Integer, String, DateTime, Enum, Date, func
-from uuid import UUID
+from sqlalchemy import Column, Integer, String, DateTime, Enum, Date, func, UUID
+from uuid import uuid4
 
 from app.db.database import Base
 from app.enums.project_priority import ProjectPriority
@@ -10,7 +10,7 @@ class Project(Base):
     __tablename__ = "projects"
 
     id = Column(Integer, primary_key=True, nullable=False, index=True, autoincrement=True)
-    uuid = Column(UUID(as_uuid=True), nullable=False)
+    uuid = Column(UUID, default=uuid4(), nullable=False)
     title = Column(String, nullable=False)
     summary = Column(String, nullable=False)
     priority = Column(Enum(ProjectPriority), nullable=False)
