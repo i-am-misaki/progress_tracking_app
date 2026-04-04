@@ -26,7 +26,7 @@
 | updated_at    | TIMESTAMP | No       | CURRENT_TIMESTAMP | TIMESTAMP WITH TIME ZONE                                      |
 | deleted_at    | TIMESTAMP | Yes      |                   | Soft delete marker (null = active record)                     |
 
-# project_assignments
+# project_assign
 | Column        | Type      | Nullable | Default           | Description                               |
 |---------------|-----------|----------|-------------------|-------------------------------------------|
 | id            | BIGINT    | No       |                   |                                           |
