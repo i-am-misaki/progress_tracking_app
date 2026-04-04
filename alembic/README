@@ -1,0 +1,17 @@
+Generic single-database configuration.
+
+## コマンド
+- 初期化（alembicディレクトリが作成される）
+```
+poetry run alembic init alembic
+```
+
+- マイグレーションファイル作成
+```
+poetry run alembic revision --autogenerate -m "<comment>"
+```
+
+- マイグレーションファイル実行
+```
+poetry run alembic upgrade head
+```
