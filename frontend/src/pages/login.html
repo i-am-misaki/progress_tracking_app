@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>進捗管理アプリ | ログイン</title>
+    <link href="/frontend/src/css/login.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Changa:wght@200..800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="h-screen w-screen flex justify-center items-center">
+        <div class="w-125 h-3/4 rounded-md inset-shadow-md inset-shadow-white-500/50 bg-white/30 backdrop-blur-xl py-6 px-3">
+            <div class="flex flex-col gap-12 py-4">
+                <div class="flex flex-col text-center gap-3">
+                    <h2 class="text-6xl " style="font-family: 'Changa', sans-serif;">USER LOGIN</h2>
+                    <h4 class="text-md" style="font-family: 'Changa', sans-serif;">Sign in to your account</h4>
+                </div>
+                <p id="err-msg" class="text-center text-yellow-300"></p>
+                <div class="flex flex-col justify-center items-center gap-6 mx-6">
+                    <label for="email"></label>
+                    <input type="email" id="email" name="email" placeholder="Email" class="w-full px-2 py-1 border-b-white border-b border-white text-base placeholder:text-slate-200 focus:outline-none "/>
+                    <div class="relative flex w-full">
+                        <label for="password"></label>
+                        <input type="password" id="password" name="password" placeholder="Password" class="w-full px-2 py-1 pr-10  border-b border-white text-base placeholder:text-slate-200 focus:outline-none "/>
+                        <button class="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer border-none">
+                            <img src="/frontend/src/components/icons/visibility.svg" class="w-5 h-5" >
+                        </button>
+                    </div>
+                    <div class="flex flex-col justify-end w-full">
+                        <form class="flex justify-end">
+                            <button type="button" class="cursor-pointer">
+                                <span class="text-base text-end" style="font-family: 'Changa', sans-serif;">Forget password ?</span>
+                            </button>
+                        </form>
+                        <form class="flex justify-end">
+                            <button type="button" class="cursor-pointer">
+                                <span class="text-base text-end" style="font-family: 'Changa', sans-serif;">Sign Up</span>
+                            </button>
+                        </form>
+                    </div>
+                    <button type="button" class="group border border-white py-2 px-8 mt-6 cursor-pointer hover:bg-white">
+                        <span class="text-white group-hover:text-slate-700" style="font-family: 'Changa', sans-serif;">LOGIN</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
