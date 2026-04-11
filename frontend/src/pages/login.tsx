@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import visibilityIcon from '../assets/icons/visibility.svg';
 import { EmailValidation, PasswordValidation } from '../libs/validation';
-import ProjectProgressList from '../pages/project_progress_list';
+
 
 
 export default function Login() {
