@@ -3,6 +3,7 @@ from fastapi import APIRouter, HTTPException, status
 from app.schemas.auth import LoginRequest
 from app.crud.auth import get_user_by_email
 from app.core.security import verify_password
+from app.core.token import create_access_token
 
 
 router = APIRouter(prefix="/guest", tags=["guest"])
@@ -31,12 +32,13 @@ async def login(request: LoginRequest):
             detail="このアカウントは無効化されています。"
         )
     
+    # アクセストークンの生成
+    access_token = create_access_token(data={"sub": str(user.uuid)})
     # 成功時はデフォルトで 200 OK が返る
-    # トークンの生成はここで行う
     return {
         "status_code": "200",
         "message": "Login successful",
-        "access_token": "dummy-token-12345",
+        "access_token": access_token,
         "token_type": "bearer"
     }
 

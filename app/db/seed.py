@@ -11,7 +11,9 @@ def seed():
     test_email = "test@example.com"
     existing_user = db.query(User).filter(User.email == test_email).first()
     if existing_user:
-        print(f"ユーザー {test_email} は既に存在しています。")
+        existing_user.password = convert_to_hashed_password("password")
+        existing_user.disabled = False
+        db.commit()
         db.close()
         return  
     

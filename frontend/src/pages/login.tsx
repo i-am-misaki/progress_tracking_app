@@ -43,7 +43,6 @@ export default function Login() {
         
             if (response.ok) {
                 const data = await response.json();
-                alert("Login Success!");
                 // console.log("Token:", data.access_token);
                 // ここで、トークンを保存して、プロジェクト進捗リストページに遷移する処理を実装する
                 navigate("/projects"); 
