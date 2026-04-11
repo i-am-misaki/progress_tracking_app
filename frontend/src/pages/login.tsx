@@ -13,6 +13,7 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errMsg, setErrMsg] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
     // ログイン処理
     const handleLogin = async () => {
@@ -80,13 +81,13 @@ export default function Login() {
             
             <div className="relative flex w-full">
               <input 
-                type="password" 
+                type={showPassword ? "text" : "password"} 
                 placeholder="Password" 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-2 py-1 pr-10 border-b border-white text-white placeholder:text-slate-200 focus:outline-none focus:bg-transparent bg-transparent"
               />
-              <button type="button" className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer border-none bg-transparent">
+              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer border-none bg-transparent">
                 <img src={visibilityIcon} className="w-5 h-5" alt="toggle password" />
               </button>
             </div>
