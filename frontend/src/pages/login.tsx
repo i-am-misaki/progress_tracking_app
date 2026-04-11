@@ -41,12 +41,12 @@ export default function Login() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),
             });
-        
+
             if (response.ok) {
                 const data = await response.json();
                 // console.log("Token:", data.access_token);
                 // ここで、トークンを保存して、プロジェクト進捗リストページに遷移する処理を実装する
-                navigate("/projects"); 
+                navigate("/projects");
             } else {
                 const errorData = await response.json();
                 setErrMsg(errorData.detail || "Login failed.");
@@ -66,23 +66,23 @@ export default function Login() {
             <h2 className="text-6xl text-black" style={{ fontFamily: "'Changa', sans-serif" }}>USER LOGIN</h2>
             <h4 className="text-md text-black" style={{ fontFamily: "'Changa', sans-serif" }}>Sign in to your account</h4>
           </div>
-          
+
           {/* エラーメッセージ */}
           <p id="err-msg" className="text-center text-yellow-300 h-6 whitespace-pre-wrap">{errMsg}</p>
 
           <div className="flex flex-col justify-center items-center gap-6 mx-6">
-            <input 
-              type="email" 
-              placeholder="Email" 
+            <input
+              type="email"
+              placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)} // 入力された値をstateに保存
               className="w-full px-2 py-1 border-b border-white text-white placeholder:text-slate-200 focus:outline-none bg-transparent"
             />
-            
+
             <div className="relative flex w-full">
-              <input 
-                type={showPassword ? "text" : "password"} 
-                placeholder="Password" 
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-2 py-1 pr-10 border-b border-white text-white placeholder:text-slate-200 focus:outline-none focus:bg-transparent bg-transparent"
@@ -94,15 +94,15 @@ export default function Login() {
 
             <div className="flex flex-col w-full text-white">
               <button type="button" className="w-fit self-end cursor-pointer text-end hover:text-gray-700">
-                <span className="text-base" style={{ fontFamily: "'Changa', sans-serif" }}>Forget password ?</span>
+                <span className="text-base" style={{ fontFamily: "'Changa', sans-serif" }} onClick={() => navigate('/password-reset')}>Forget password ?</span>
               </button>
               <button type="button" className="w-fit self-end cursor-pointer text-end hover:text-gray-700">
                 <span className="text-base" style={{ fontFamily: "'Changa', sans-serif" }}>Sign Up</span>
               </button>
             </div>
 
-            <button 
-              type="button" 
+            <button
+              type="button"
               onClick={handleLogin} // クリック時に実行
               className="group border border-white py-2 px-8 mt-6 cursor-pointer hover:bg-white transition-colors"
             >
