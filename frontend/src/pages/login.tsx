@@ -1,56 +1,61 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import visibilityIcon from '../assets/icons/visibility.svg';
 import { EmailValidation, PasswordValidation } from '../libs/validation';
+import ProjectProgressList from '../pages/project_progress_list';
 
 
 export default function Login() {
-  // 入力値を管理する「状態（State）」
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errMsg, setErrMsg] = useState('');
+    const navigate = useNavigate();
 
-  // ログイン処理
-  const handleLogin = async () => {
-    setErrMsg(""); // エラーをクリア
-    let errMsgList: string[] = [];
+    // 入力値を管理する「状態（State）」
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [errMsg, setErrMsg] = useState('');
 
-    // メールアドレスのバリデーション
-    const emailValidation = EmailValidation(email);
-    if (!emailValidation.isValid) {
-        errMsgList.push(emailValidation.message);
-    }
+    // ログイン処理
+    const handleLogin = async () => {
+        setErrMsg(""); // エラーをクリア
+        let errMsgList: string[] = [];
 
-    // パスワードのバリデーション
-    const passwordValidation = PasswordValidation(password);
-    if (!passwordValidation.isValid) {
-        errMsgList.push(passwordValidation.message);
-    }
-
-    if (errMsgList.length > 0) {
-      setErrMsg(errMsgList.join("\n"));
-    } else {
-        try {
-          const response = await fetch("/guest/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password }),
-          });
-    
-          if (response.ok) {
-            const data = await response.json();
-            alert("Login Success!");
-            console.log("Token:", data.access_token);
-            // TODO: ログイン後の画面遷移
-          } else {
-            const errorData = await response.json();
-            setErrMsg(errorData.detail || "Login failed.");
-          }
-        } catch (error) {
-          setErrMsg("Server connection failed.");
+        // メールアドレスのバリデーション
+        const emailValidation = EmailValidation(email);
+        if (!emailValidation.isValid) {
+            errMsgList.push(emailValidation.message);
         }
-      };
-    }
+
+        // パスワードのバリデーション
+        const passwordValidation = PasswordValidation(password);
+        if (!passwordValidation.isValid) {
+            errMsgList.push(passwordValidation.message);
+        }
+
+        if (errMsgList.length > 0) {
+        setErrMsg(errMsgList.join("\n"));
+        } else {
+            try {
+            const response = await fetch("/api/guest/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
+            });
+        
+            if (response.ok) {
+                const data = await response.json();
+                alert("Login Success!");
+                // console.log("Token:", data.access_token);
+                // ここで、トークンを保存して、プロジェクト進捗リストページに遷移する処理を実装する
+                navigate("/projects"); 
+            } else {
+                const errorData = await response.json();
+                setErrMsg(errorData.detail || "Login failed.");
+            }
+            } catch (error) {
+            setErrMsg("Server connection failed.");
+            }
+        };
+        }
 
 
   return (
