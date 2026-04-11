@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import visibilityIcon from '../assets/icons/visibility.svg';
+import { EmailValidation, PasswordValidation } from '../libs/validation';
 
 
 export default function Login() {
@@ -12,32 +13,45 @@ export default function Login() {
   // ログイン処理
   const handleLogin = async () => {
     setErrMsg(""); // エラーをクリア
+    let errMsgList: string[] = [];
 
-    if (!email || !password) {
-      setErrMsg("Email and Password are required.");
-      return;
+    // メールアドレスのバリデーション
+    const emailValidation = EmailValidation(email);
+    if (!emailValidation.isValid) {
+        errMsgList.push(emailValidation.message);
     }
 
-    try {
-      const response = await fetch("http://localhost:8000/guest/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        alert("Login Success!");
-        console.log("Token:", data.access_token);
-        // TODO: ログイン後の画面遷移
-      } else {
-        const errorData = await response.json();
-        setErrMsg(errorData.detail || "Login failed.");
-      }
-    } catch (error) {
-      setErrMsg("Server connection failed.");
+    // パスワードのバリデーション
+    const passwordValidation = PasswordValidation(password);
+    if (!passwordValidation.isValid) {
+        errMsgList.push(passwordValidation.message);
     }
-  };
+
+    if (errMsgList.length > 0) {
+      setErrMsg(errMsgList.join("\n"));
+    } else {
+        try {
+          const response = await fetch("/guest/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          });
+    
+          if (response.ok) {
+            const data = await response.json();
+            alert("Login Success!");
+            console.log("Token:", data.access_token);
+            // TODO: ログイン後の画面遷移
+          } else {
+            const errorData = await response.json();
+            setErrMsg(errorData.detail || "Login failed.");
+          }
+        } catch (error) {
+          setErrMsg("Server connection failed.");
+        }
+      };
+    }
+
 
   return (
     <div className="h-screen w-screen flex justify-center items-center">
@@ -49,7 +63,7 @@ export default function Login() {
           </div>
           
           {/* エラーメッセージ */}
-          <p id="err-msg" className="text-center text-yellow-300 h-6">{errMsg}</p>
+          <p id="err-msg" className="text-center text-yellow-300 h-6 whitespace-pre-wrap">{errMsg}</p>
 
           <div className="flex flex-col justify-center items-center gap-6 mx-6">
             <input 
