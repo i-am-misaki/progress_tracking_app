@@ -22,7 +22,8 @@ def seed():
         uuid=uuid.uuid4(),
         name="Test User",
         email="test@example.com",
-        password=hashed_password
+        password=hashed_password,
+        disabled=False
     )
     db.add(sample_user)
     db.commit() 

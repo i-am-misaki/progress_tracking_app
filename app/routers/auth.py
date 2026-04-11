@@ -16,10 +16,19 @@ router = APIRouter(prefix="/guest", tags=["guest"])
 @router.post("/login")
 async def login(request: LoginRequest):
     user = get_user_by_email(request.email)
+
+    # ユーザーが存在しない、またはパスワードが間違っている場合のエラーハンドリング
     if not user or not verify_password(request.password, user.password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="メールアドレスまたはパスワードが間違っています。"
+        )
+    
+    # アカウントが無効化されている場合のエラーハンドリング
+    if user.disabled:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="このアカウントは無効化されています。"
         )
     
     # 成功時はデフォルトで 200 OK が返る
