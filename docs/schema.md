@@ -6,6 +6,7 @@
 | name          | VARCHAR      | No       |                   |                                           |
 | email         | VARCHAR(245) | No       |                   | UNIQUE                                    |
 | password      | TEXT         | No       |                   |                                           |
+| disabled      | BOOLEAN      | No       | false             |                                           |
 | created_at    | TIMESTAMP    | No       | CURRENT_TIMESTAMP | TIMESTAMP WITH TIME ZONE                  |
 | updated_at    | TIMESTAMP    | No       | CURRENT_TIMESTAMP | TIMESTAMP WITH TIME ZONE                  |
 | deleted_at    | TIMESTAMP    | Yes      |                   | Soft delete marker (null = active record) |
@@ -26,7 +27,7 @@
 | updated_at    | TIMESTAMP | No       | CURRENT_TIMESTAMP | TIMESTAMP WITH TIME ZONE                                      |
 | deleted_at    | TIMESTAMP | Yes      |                   | Soft delete marker (null = active record)                     |
 
-# project_assign
+# project_assignments
 | Column        | Type      | Nullable | Default           | Description                               |
 |---------------|-----------|----------|-------------------|-------------------------------------------|
 | id            | BIGINT    | No       |                   |                                           |
