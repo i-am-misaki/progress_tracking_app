@@ -1,10 +1,6 @@
-from passlib.context import CryptContext
+from pwdlib import PasswordHash
 
-# パスワードのハッシュ化と照合のためのCryptContextを設定
-# bcryptアルゴリズムを使用し、古いアルゴリズムは自動的に非推奨とする設定
-# poetry add passlib
-# poetry add "bcrypt<4.0.0" passlibとの互換性のため、bcryptのバージョンを4.0.0未満に制限
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_hash_manager = PasswordHash.recommended()
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
@@ -17,7 +13,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     Returns:
         bool: 照合結果（True/False）を返す
     """
-    return pwd_context.verify(plain_password, hashed_password)
+    return pwd_hash_manager.verify(plain_password, hashed_password)
 
 
 def convert_to_hashed_password(password: str) -> str:
@@ -30,4 +26,4 @@ def convert_to_hashed_password(password: str) -> str:
     Returns:
         str: ハッシュ化されたパスワード
     """
-    return pwd_context.hash(password)
+    return pwd_hash_manager.hash(password)
