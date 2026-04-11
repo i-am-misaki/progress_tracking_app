@@ -92,11 +92,11 @@ export default function Login() {
               </button>
             </div>
 
-            <div className="flex flex-col justify-end w-full text-white">
-              <button type="button" className="cursor-pointer text-end hover:text-gray-700">
+            <div className="flex flex-col w-full text-white">
+              <button type="button" className="w-fit self-end cursor-pointer text-end hover:text-gray-700">
                 <span className="text-base" style={{ fontFamily: "'Changa', sans-serif" }}>Forget password ?</span>
               </button>
-              <button type="button" className="cursor-pointer text-end hover:text-gray-700">
+              <button type="button" className="w-fit self-end cursor-pointer text-end hover:text-gray-700">
                 <span className="text-base" style={{ fontFamily: "'Changa', sans-serif" }}>Sign Up</span>
               </button>
             </div>
