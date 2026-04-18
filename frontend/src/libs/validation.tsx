@@ -11,19 +11,19 @@ import {
 
 /**
  * メッセージ内の<文字数>を指定された文字数に置換する関数
- * 
+ *
  * @param message {string} - 置換するメッセージ
  * @param count {number} - 置換する文字数
  * @returns {string} - 置換後のメッセージ
  */
 function replaceWordCount(message: string, count: number): string {
-    return message.replace("{文字数}", count.toString());
-}   
+    return message.replace("${count}", count.toString());
+}
 
 
 /**
  * 値が空かどうかを判定するバリデーション
- * 
+ *
  * @param value {string} - 判定する値
  * @returns {isValid: boolean, message: string} - 空の場合は、isValid: falseとエラーメッセージを返す。
  *                                                  空でない場合は、isValid: trueと空のメッセージを返す。
@@ -38,7 +38,7 @@ export function IsEmpty(value: string): { isValid: boolean; message: string } {
 
 /**
  * メールアドレスの形式が正しいかを判定するバリデーション
- * 
+ *
  * @param email {string} - 判定対象メールアドレス
  * @returns {isValid: boolean, message: string} - メールアドレスが有効な場合は、isValid: trueと空のメッセージを返す。
  *                                                  無効な場合は、isValid: falseとエラーメッセージを返す。
@@ -56,14 +56,14 @@ export function EmailValidation(email: string): { isValid: boolean; message: str
         const message = replaceWordCount(EMAIL_MAX_LENGTH_MSG, EMAIL_MAX_LENGTH);
         return { isValid: false, message: message };
     }
-    //　ここで、メールアドレスの存在確認を行う 
+    //　ここで、メールアドレスの存在確認を行う
     return { isValid: true, message: '' };
 }
 
 
 /**
  * パスワードの形式が正しいかを判定するバリデーション
- * 
+ *
  * @param password {string} - 判定対象パスワード
  * @returns {isValid: boolean, message: string} - メールアドレスが有効な場合は、isValid: trueと空のメッセージを返す。
  *                                                  無効な場合は、isValid: falseとエラーメッセージを返す。
