@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import Login from './pages/login.tsx';
+import SignUp from './pages/sign_up.tsx';
 import ProjectProgressList from './pages/project_progress_list.tsx';
 import PasswordForget from './pages/password_forget.tsx';
 import PasswordResetMailed from './pages/password_reset_mailed.tsx';
@@ -14,6 +15,8 @@ function App() {
       <Routes>
         {/* ログイン画面 */}
         <Route path="/login" element={<Login />} />
+        {/* サインアップ画面 */}
+        <Route path="/sign-up" element={<SignUp />} />
 
         {/* パスワードリセットメールアドレス入力画面 */}
         <Route path="/password_forget" element={<PasswordForget />} />

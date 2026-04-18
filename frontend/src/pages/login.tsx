@@ -95,7 +95,7 @@ export default function Login() {
                 <span className="text-base" style={{ fontFamily: "'Changa', sans-serif" }} onClick={() => navigate('/forget-password')}>Forget password ?</span>
               </button>
               <button type="button" className="w-fit self-end cursor-pointer text-end hover:text-gray-700">
-                <span className="text-base" style={{ fontFamily: "'Changa', sans-serif" }}>Sign Up</span>
+                <span className="text-base" style={{ fontFamily: "'Changa', sans-serif" }} onClick={() => navigate('/sign-up')}>Sign Up</span>
               </button>
             </div>
 
