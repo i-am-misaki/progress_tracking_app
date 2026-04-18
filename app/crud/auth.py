@@ -7,9 +7,9 @@ async def create_user(email: str, password: str, name: str) -> None:
     新しいユーザーを作成する。
 
     Args:
-        email (str): ユーザーのメールアドレス
-        password (str): ユーザーのパスワード
-        name (str): ユーザーの名前
+        email (str)    : ユーザーのメールアドレス
+        password (str) : ユーザーのパスワード
+        name (str)     : ユーザーの名前
     """
     db = SessionLocal()
     new_user = User(email=email, password=password, name=name)
@@ -49,8 +49,8 @@ async def update_user_password(user: User, new_password: str) -> None:
     ユーザーのパスワードを更新する。
 
     Args:
-        user (User): パスワードを更新するユーザー
-        new_password (str): 新しいパスワード
+        user (User)        : パスワードを更新するユーザー
+        new_password (str) : 新しいパスワード
     """
     db = SessionLocal()
     user.password = new_password

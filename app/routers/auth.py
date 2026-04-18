@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter
 
 from app.schemas.auth import LoginRequest, PasswordForgetRequest, PasswordResetRequest, RegisterRequest
 from app.crud.auth import get_user_by_email, update_user_password, create_user
@@ -15,7 +15,16 @@ router = APIRouter(prefix="/guest", tags=["guest"])
 # FastAPIがログイン画面用のURLを持つ必要はない。
 
 @router.post("/signup")
-async def signup(request: RegisterRequest):
+async def signup(request: RegisterRequest) -> dict:
+    """
+    ユーザー登録の処理を行うエンドポイント。
+    フロントエンドからユーザーのメールアドレス、パスワード、名前を受け取り、新しいユーザーを作成する。
+
+    Args:
+        request (RegisterRequest): ユーザー登録のリクエストデータ（メールアドレス、パスワード、名前）
+    Returns:
+        dict: ユーザー登録の結果を含むレスポンス
+    """
     hashed_password = convert_to_hashed_password(request.password.strip())
     await create_user(request.email.strip(),
                     hashed_password,
@@ -27,7 +36,16 @@ async def signup(request: RegisterRequest):
 
 
 @router.post("/login")
-async def login(request: LoginRequest):
+async def login(request: LoginRequest) -> dict:
+    """
+    ログインの処理を行うエンドポイント。
+    フロントエンドからユーザーのメールアドレスとパスワードを受け取り、ユーザーの認証を行う。
+
+    Args:
+        request (LoginRequest): ログインのリクエストデータ（メールアドレス、パスワード）
+    Returns:
+        dict: ログインの結果を含むレスポンス（成功時はアクセストークンを含む）
+    """
     user = await get_user_by_email(request.email.strip())
 
     # ユーザーが存在しない、またはパスワードが間違っている場合のエラーハンドリング
@@ -57,7 +75,16 @@ async def login(request: LoginRequest):
 
 
 @router.post("/password_forget")
-async def forget_password(request: PasswordForgetRequest):
+async def forget_password(request: PasswordForgetRequest) -> dict:
+    """
+    パスワード忘れた場合の処理を行うエンドポイント。
+    フロントエンドからユーザーのメールアドレスを受け取り、パスワードリセットのトークンを生成する。
+
+    Args:
+        request (PasswordForgetRequest): パスワード忘れた場合のリクエストデータ（メールアドレス）
+    Returns:
+        dict: パスワード忘れた場合の処理の結果を含むレスポンス（成功時はリセットトークンを含む）
+    """
     user = await get_user_by_email(request.email.strip())
     if not user:
         return {
