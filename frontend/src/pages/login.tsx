@@ -33,29 +33,27 @@ export default function Login() {
         }
 
         if (errMsgList.length > 0) {
-        setErrMsg(errMsgList.join("\n"));
+          setErrMsg(errMsgList.join("\n"));
         } else {
-            try {
-            const response = await fetch("/api/guest/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password }),
-            });
+          try {
+          const response = await fetch("/api/guest/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          });
 
-            if (response.ok) {
-                const data = await response.json();
-                // console.log("Token:", data.access_token);
-                // ここで、トークンを保存して、プロジェクト進捗リストページに遷移する処理を実装する
-                navigate("/projects");
-            } else {
-                const errorData = await response.json();
-                setErrMsg(errorData.detail || "Login failed.");
-            }
-            } catch (error) {
+          if (response.ok) {
+            // ここで、トークンを保存して、プロジェクト進捗リストページに遷移する処理を実装する
+            navigate("/projects");
+          } else {
+            const errorData = await response.json();
+            setErrMsg(errorData.detail || "Login failed.");
+          }
+          } catch (error) {
             setErrMsg("Server connection failed.");
-            }
+          }
         };
-        }
+    }
 
 
   return (
