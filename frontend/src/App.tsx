@@ -4,6 +4,7 @@ import Login from './pages/login.tsx';
 import ProjectProgressList from './pages/project_progress_list.tsx';
 import PasswordForget from './pages/password_forget.tsx';
 import PasswordResetMailed from './pages/password_reset_mailed.tsx';
+import PasswordResetting from './pages/password_resetting.tsx';
 import PasswordReset from './pages/password_reset.tsx';
 
 
@@ -18,7 +19,9 @@ function App() {
         <Route path="/password_forget" element={<PasswordForget />} />
         {/* パスワードリセットメール送信完了画面 */}
         <Route path="/password_reset_mailed" element={<PasswordResetMailed />} />
-        {/* パスワードリセット画面 */}
+        {/* パスワードリセット新パスワード入力画面 */}
+        <Route path="/password_resetting" element={<PasswordResetting />} />
+        {/* パスワードリセット完了画面 */}
         <Route path="/password_reset" element={<PasswordReset />} />
 
         {/* 案件進捗一覧画面 */}

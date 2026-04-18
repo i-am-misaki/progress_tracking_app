@@ -19,16 +19,18 @@ export default function PasswordForget() {
         } else {
             // パスワードリセットメール送信の処理をここに実装する
             try {
-                console.log("Send reset mail to:", email);
-                const response = await fetch("/api/password_forget", {
+                const response = await fetch("/api/guest/password_forget", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ email }),
                 });
 
-                if (response.status === 200) {
-
-                } else if (response.status === 404) {
+                const data = await response.json();
+                const statusCode = data.status_code;
+                if (statusCode === '200') {
+                    const token = data.reset_token;
+                    navigate('/password_resetting/', { state: { token } }); // パスワードリセット画面に遷移
+                } else if (statusCode === '404') {
                     navigate('/password_reset_mailed'); // パスワードリセットメール送信完了ページに遷移
                 } else {
                     const errorData = await response.json();
