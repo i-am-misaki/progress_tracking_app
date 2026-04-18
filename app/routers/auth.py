@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException, status
 
-from app.schemas.auth import LoginRequest, PasswordForgetRequest, PasswordResetRequest
-from app.crud.auth import get_user_by_email, update_user_password
-from app.core.security import verify_password
+from app.schemas.auth import LoginRequest, PasswordForgetRequest, PasswordResetRequest, RegisterRequest
+from app.crud.auth import get_user_by_email, update_user_password, create_user
+from app.core.security import verify_password, convert_to_hashed_password
 from app.core.token import create_access_token, create_password_reset_token, get_current_user
 from app.core.config import PASSWORD_RESET_SECRET_KEY
 
@@ -13,6 +13,17 @@ router = APIRouter(prefix="/guest", tags=["guest"])
 # GETメソッドは不要
 # フロントがReactの場合、画面表示はReact(Vite)が担当するため、
 # FastAPIがログイン画面用のURLを持つ必要はない。
+
+@router.post("/signup")
+async def signup(request: RegisterRequest):
+    hashed_password = convert_to_hashed_password(request.password.strip())
+    await create_user(request.email.strip(),
+                    hashed_password,
+                    request.name.strip())
+    return {
+        "status_code": "200",
+        "message": "Signup successful"
+    }
 
 
 @router.post("/login")

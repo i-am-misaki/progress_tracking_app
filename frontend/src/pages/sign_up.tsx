@@ -25,7 +25,7 @@ export default function SignUp() {
             errMsgList.push("Passwords do not match.");
         }
 
-        if (IsEmpty(name)) {
+        if (!IsEmpty(name).isValid) {
             errMsgList.push(EMPTY_MSG);
         }
 
@@ -42,7 +42,7 @@ export default function SignUp() {
         }
 
         if (errMsgList.length > 0) {
-          setErrMsg(errMsgList.join("\n"));
+          setErrMsg(errMsgList.join('\n'));
         } else {
           try {
             const response = await fetch("/api/guest/signup", {
@@ -54,7 +54,7 @@ export default function SignUp() {
             const data = await response.json();
             const statuCode = response.status;
             if (statuCode === 200) {
-              navigate("/login");
+              navigate("/signed");
             } else {
               setErrMsg(data.detail || "Sign up failed.");
             }
@@ -73,7 +73,7 @@ export default function SignUp() {
                     <p style={{ fontFamily: "'Changa', sans-serif" }}>Create your account to get started.</p>
                 </div>
                 {/* error message */}
-                <p className="text-yellow-300 text-center">{errMsg}</p>
+                <p className="text-yellow-300 text-center whitespace-pre-wrap">{errMsg}</p>
                 <div className="flex flex-col gap-6">
                     <input
                         type="text"

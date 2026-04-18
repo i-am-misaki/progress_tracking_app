@@ -7,6 +7,7 @@ import PasswordForget from './pages/password_forget.tsx';
 import PasswordResetMailed from './pages/password_reset_mailed.tsx';
 import PasswordResetting from './pages/password_resetting.tsx';
 import PasswordReset from './pages/password_reset.tsx';
+import Signed from './pages/signed.tsx';
 
 
 function App() {
@@ -17,6 +18,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         {/* サインアップ画面 */}
         <Route path="/sign-up" element={<SignUp />} />
+        {/* サインアップ完了画面 */}
+        <Route path="/signed" element={<Signed />} />
 
         {/* パスワードリセットメールアドレス入力画面 */}
         <Route path="/password_forget" element={<PasswordForget />} />
