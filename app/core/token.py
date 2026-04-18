@@ -4,7 +4,7 @@ from typing import Annotated
 import jwt
 from jwt.exceptions import InvalidTokenError
 from fastapi import HTTPException, status, Depends
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer
 
 from app.core.config import (
     SECRET_KEY, ALGORITHM,
@@ -67,7 +67,8 @@ async def get_current_user(secret_key: str, token: str = Annotated[str, Depends(
     JWTアクセストークンから現在のユーザーを取得する関数。
 
     Args:
-        token(str): クライアントから送信されたJWTアクセストークン。
+        secret_key (str) : トークンの検証に使用するシークレットキー。
+        token(str)       : クライアントから送信されたJWTアクセストークン。
     Returns:
         dict: トークンのペイロードに含まれるユーザーデータ。
     Raises:

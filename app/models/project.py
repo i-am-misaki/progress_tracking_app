@@ -7,6 +7,23 @@ from app.enums.project_status import ProjectStatus
 
 
 class Project(Base):
+    """
+    プロジェクトのモデルクラス。
+    プロジェクトの基本情報を定義するテーブルを表す。
+
+    Attributes:
+        id (int)              : プロジェクトの一意の識別子
+        uuid (UUID)           : プロジェクトのUUID
+        title (str)           : プロジェクトのタイトル
+        summary (str)         : プロジェクトの概要
+        priority (ProjectPriority) : プロジェクトの優先度
+        status (ProjectStatus)     : プロジェクトのステータス
+        delivery_date (Date)  : プロジェクトの納期
+        client (str)          : クライアントの名前
+        created_at (datetime) : プロジェクトが作成された日時
+        updated_at (datetime) : プロジェクトが最後に更新された日時
+        deleted_at (datetime) : プロジェクトが削除された日時（論理削除の場合）
+    """
     __tablename__ = "projects"
 
     id = Column(Integer, primary_key=True, nullable=False, index=True, autoincrement=True)

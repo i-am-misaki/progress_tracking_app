@@ -5,8 +5,20 @@ from app.db.database import Base
 
 
 class ProcessTracking(Base):
-    __tablename__ = "process_trackings"
+    """
+    進捗管理のモデルクラス。
+    ユーザーの進捗を追跡するためのテーブルを定義する。
 
+    Attributes:
+        id (int)              : プロセストラッキングの一意の識別子
+        content (str)         : 進捗の内容
+        user_id (int)         : 進捗を記録したユーザーのID
+        project_id (int)      : 進捗が関連するプロジェクトのID
+        created_at (datetime) : 進捗が作成された日時
+        updated_at (datetime) : 進捗が最後に更新された日時
+        deleted_at (datetime) : 進捗が削除された日時（論理削除の場合）
+    """
+    __tablename__ = "process_trackings"
 
     id = Column(Integer, primary_key=True, autoincrement=True, nullable=False, index=True)
     content = Column(String, nullable=False)
