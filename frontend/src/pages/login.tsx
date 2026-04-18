@@ -94,7 +94,7 @@ export default function Login() {
 
             <div className="flex flex-col w-full text-white">
               <button type="button" className="w-fit self-end cursor-pointer text-end hover:text-gray-700">
-                <span className="text-base" style={{ fontFamily: "'Changa', sans-serif" }} onClick={() => navigate('/password-reset')}>Forget password ?</span>
+                <span className="text-base" style={{ fontFamily: "'Changa', sans-serif" }} onClick={() => navigate('/forget-password')}>Forget password ?</span>
               </button>
               <button type="button" className="w-fit self-end cursor-pointer text-end hover:text-gray-700">
                 <span className="text-base" style={{ fontFamily: "'Changa', sans-serif" }}>Sign Up</span>
