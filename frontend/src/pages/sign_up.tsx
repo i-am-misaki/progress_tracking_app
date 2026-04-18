@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { EmailValidation, PasswordValidation } from "../libs/validation";
+import { EmailValidation, PasswordValidation, IsEmpty } from "../libs/validation";
+import { EMPTY_MSG } from '../configs/validation_messages';
 import visibilityIcon from '../assets/icons/visibility.svg';
 
 export default function SignUp() {
@@ -24,6 +25,10 @@ export default function SignUp() {
             errMsgList.push("Passwords do not match.");
         }
 
+        if (IsEmpty(name)) {
+            errMsgList.push(EMPTY_MSG);
+        }
+
         // メールアドレスのバリデーション
         const emailValidation = EmailValidation(email);
         if (!emailValidation.isValid) {
@@ -35,7 +40,6 @@ export default function SignUp() {
         if (!passwordValidation.isValid) {
             errMsgList.push(passwordValidation.message);
         }
-
 
         if (errMsgList.length > 0) {
           setErrMsg(errMsgList.join("\n"));
