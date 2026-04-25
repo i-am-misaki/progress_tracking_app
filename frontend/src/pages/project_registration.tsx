@@ -45,6 +45,8 @@ export default function ProjectRegistration() {
     const [client, setClient] = useState('');
     const [eta, setEta] = useState('');
     const [status, setStatus] = useState('');
+    const [priority, setPriority] = useState('');
+    const [pic, setPic] = useState('');
     const [progress, setProgress] = useState('');
     const [errMsg, setErrMsg] = useState('');
 
@@ -180,6 +182,7 @@ export default function ProjectRegistration() {
                                                             key={user.uuid}
                                                             onClick={() => {
                                                                 setInputValue(user.name);
+                                                                setPic(user.uuid);
                                                                 setIsOpen(false);
                                                             }}
                                                             className="p-2 text-white text-left hover:bg-gray-700 cursor-pointer transition-colors"
@@ -189,6 +192,63 @@ export default function ProjectRegistration() {
                                                         ))}
                                                         </ul>
                                                     )}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr className="border-b">
+                                        <th scope="col" className="w-1/4 pr-2 pt-6 pb-0.5 text-xl text-left" style={{ fontFamily: "'Changa', sans-serif" }}>
+                                            Priority<span className="ml-2 text-amber-500">*</span>
+                                        </th>
+                                        <td>
+                                            <div className="w-full flex items-center gap-1 pt-6 pb-0.5">
+                                                <div dir="ltr" >
+                                                    <input
+                                                        type="radio"
+                                                        name="priority"
+                                                        id="high"
+                                                        value="high"
+                                                        checked={priority === "high"}
+                                                        onChange={e => setPriority(e.target.value)}
+                                                        className="hidden peer" />
+                                                    <label
+                                                        htmlFor="high"
+                                                        className="flex flex-col mx-auto text-center border border-white rounded-s-lg p-2 mb-0.5 text-white text-sm hover:bg-white hover:text-black peer-checked:bg-white peer-checked:text-black"
+                                                        >
+                                                        HIGH
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <input
+                                                        type="radio"
+                                                        name="priority"
+                                                        id="medium"
+                                                        value="medium"
+                                                        checked={priority === "medium"}
+                                                        onChange={e => setPriority(e.target.value)}
+                                                        className="hidden peer" />
+                                                    <label
+                                                        htmlFor="medium"
+                                                        className="flex flex-col mx-auto text-center border border-white p-2 mb-0.5 text-white text-sm hover:bg-white hover:text-black peer-checked:bg-white peer-checked:text-black"
+                                                    >
+                                                        MEDIUM
+                                                    </label>
+                                                </div>
+                                                <div dir="rtl">
+                                                    <input
+                                                        type="radio"
+                                                        name="priority"
+                                                        id="low"
+                                                        value="low"
+                                                        checked={priority === "low"}
+                                                        onChange={e => setPriority(e.target.value)}
+                                                        className="hidden peer" />
+                                                    <label
+                                                        htmlFor="low"
+                                                        className="flex flex-col mx-auto text-center border border-white rounded-s-lg p-2 mb-0.5 text-white text-sm hover:bg-white hover:text-black peer-checked:bg-white peer-checked:text-black"
+                                                        >
+                                                            LOW
+                                                    </label>
                                                 </div>
                                             </div>
                                         </td>
