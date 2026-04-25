@@ -92,15 +92,15 @@ export default function ProjectRegistration() {
                     <div className="flex flex-col gap-4 py-4">
                         <div className="flex flex-col text-center gap-3">
                             <h1 className="text-3xl font-bold" style={{ fontFamily: "'Changa', sans-serif" }}>Project Registration</h1>
-                            <p id="err-msg" className="text-center text-yellow-300 whitespace-pre-wrap">{errMsg}</p>
-                            <table className="w-2/3 mx-auto border-collapse">
+                            <p id="err-msg" className="mb-2 text-center text-yellow-300 whitespace-pre-wrap">{errMsg}</p>
+                            <table className="w-1/2 mx-auto border-collapse">
                                 <tbody>
                                     <tr className="border-b">
-                                        <th scope="col" className="w-1/3 p-10 pb-0.5 text-xl text-left" style={{ fontFamily: "'Changa', sans-serif" }}>
+                                        <th scope="col" className="w-1/4 pr-2 pt-6 pb-0.5 text-xl text-left" style={{ fontFamily: "'Changa', sans-serif" }}>
                                             Project Name<span className="ml-2 text-amber-500">*</span>
                                         </th>
                                         <td>
-                                            <div className="w-3/4 pt-10 pb-0.5">
+                                            <div className="w-full pt-6 pb-0.5">
                                                 <input
                                                     type="text"
                                                     value={projectName}
@@ -111,11 +111,11 @@ export default function ProjectRegistration() {
                                         </td>
                                     </tr>
                                     <tr className="border-b">
-                                        <th scope="col" className="w-1/3 p-10 pb-0.5 text-xl text-left" style={{ fontFamily: "'Changa', sans-serif" }}>
+                                        <th scope="col" className="w-1/4 pr-2 pt-6 pb-0.5 text-xl text-left" style={{ fontFamily: "'Changa', sans-serif" }}>
                                             Project Summary<span className="ml-2 text-amber-500">*</span>
                                         </th>
                                         <td>
-                                            <div className="w-3/4 pt-10 pb-0.5">
+                                            <div className="w-full pt-6 pb-0.5">
                                                 <textarea
                                                     value={projectSummary}
                                                     onChange={e => setProjectSummary(e.target.value)}
@@ -125,11 +125,11 @@ export default function ProjectRegistration() {
                                         </td>
                                     </tr>
                                     <tr className="border-b">
-                                        <th scope="col" className="w-1/3 p-10 pb-0.5 text-xl text-left" style={{ fontFamily: "'Changa', sans-serif" }}>
+                                        <th scope="col" className="w-1/4 pr-2 pt-6 pb-0.5 text-xl text-left" style={{ fontFamily: "'Changa', sans-serif" }}>
                                             Client<span className="ml-2 text-amber-500">*</span>
                                         </th>
                                         <td>
-                                            <div className="w-3/4 pt-10 pb-0.5">
+                                            <div className="w-full pt-6 pb-0.5">
                                                 <input
                                                     type="text"
                                                     value={client}
@@ -140,26 +140,26 @@ export default function ProjectRegistration() {
                                         </td>
                                     </tr>
                                     <tr className="border-b">
-                                        <th scope="col" className="w-1/3 p-10 pb-0.5 text-xl text-left" style={{ fontFamily: "'Changa', sans-serif" }}>
-                                            ETA<span className="ml-2 text-amber-500">*</span>
+                                        <th scope="col" className="w-1/4 pr-2 pt-6 pb-0.5 text-xl text-left" style={{ fontFamily: "'Changa', sans-serif" }}>
+                                            ETA
                                         </th>
                                         <td>
-                                            <div className="w-3/4 pt-10 pb-0.5">
-                                                <input
-                                                    type="date"
-                                                    value={eta}
-                                                    onChange={e => setEta(e.target.value)}
-                                                    className="text-white bg-transparent outline-none" />
+                                            <div className="w-1/3 pt-10 pb-0.5">
+                                            <input
+                                                type="date"
+                                                value={eta}
+                                                onChange={e => setEta(e.target.value)}
+                                                className="text-white text-left bg-transparent outline-none [&::-webkit-calendar-picker-indicator]:invert" />
                                             </div>
                                         </td>
                                     </tr>
                                     <tr className="border-b">
-                                        <th scope="col" className="w-1/3 p-10 pb-0.5 text-xl text-left" style={{ fontFamily: "'Changa', sans-serif" }}>
+                                        <th scope="col" className="w-1/4 pr-2 pt-6 pb-0.5 text-xl text-left" style={{ fontFamily: "'Changa', sans-serif" }}>
                                             PIC
                                         </th>
                                         <td>
                                             <div className="relative">
-                                                <div className="w-3/4 pt-10 pb-0.5">
+                                                <div className="w-full pt-6 pb-0.5">
                                                     <input
                                                         type="text"
                                                         placeholder="Search by name"
@@ -194,11 +194,11 @@ export default function ProjectRegistration() {
                                         </td>
                                     </tr>
                                     <tr className="border-b">
-                                        <th scope="col" className="w-1/3 p-10 pb-0.5 text-xl text-left" style={{ fontFamily: "'Changa', sans-serif" }}>
+                                        <th scope="col" className="w-1/4 pr-2 pt-6 pb-0.5 text-xl text-left" style={{ fontFamily: "'Changa', sans-serif" }}>
                                             Status<span className="ml-2 text-amber-500">*</span>
                                         </th>
                                         <td>
-                                            <div className="w-4/5 flex items-center gap-2 pt-10 pb-0.5">
+                                            <div className="w-full flex items-center gap-1 pt-6 pb-0.5">
                                                 <div dir="ltr" >
                                                     <input
                                                         type="radio"
@@ -283,11 +283,11 @@ export default function ProjectRegistration() {
                                         </td>
                                     </tr>
                                     <tr className="border-b">
-                                        <th scope="col" className="w-1/3 p-10 pb-0.5 text-xl text-left" style={{ fontFamily: "'Changa', sans-serif" }}>
+                                        <th scope="col" className="w-1/4 pr-2 pt-6 pb-0.5 text-xl text-left" style={{ fontFamily: "'Changa', sans-serif" }}>
                                             Progress
                                         </th>
                                         <td>
-                                            <div className="w-3/4 pt-10 pb-0.5">
+                                            <div className="w-full pt-4 pb-0.5">
                                                 <input
                                                     type="text"
                                                     value={progress}
@@ -299,7 +299,7 @@ export default function ProjectRegistration() {
                                     </tr>
                                 </tbody>
                             </table>
-                            <div className="flex justify-center items-center gap-4">
+                            <div className="flex justify-center items-center gap-4 mt-4">
                                 <button
                                     type="button"
                                     className="group border border-white text-white py-2 px-8 mt-6 cursor-pointer hover:bg-white hover:text-black transition-colors"
