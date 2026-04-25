@@ -8,6 +8,7 @@ import PasswordResetMailed from './pages/password_reset_mailed.tsx';
 import PasswordResetting from './pages/password_resetting.tsx';
 import PasswordReset from './pages/password_reset.tsx';
 import Signed from './pages/signed.tsx';
+import ProjectRegistration from './pages/project_registration.tsx';
 
 
 function App() {
@@ -32,6 +33,8 @@ function App() {
 
         {/* 案件進捗一覧画面 */}
         <Route path="/projects" element={<ProjectProgressList />} />
+        {/* 案件登録画面 */}
+        <Route path="/project/register" element={<ProjectRegistration />} />
 
         {/* ルートURLにアクセスしたらログインへ飛ばす */}
         <Route path="/" element={<Navigate to="/login" />} />

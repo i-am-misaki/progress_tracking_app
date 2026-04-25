@@ -1,8 +1,12 @@
+import { useNavigate } from 'react-router-dom';
+
 import { AddIcon } from '../assets/icons/AddIcon';
 
 
 
 export default function ProjectProgressList() {
+    const navigate = useNavigate();
+
     return (
         <div className="h-screen w-screen">
             <div className="flex justify-end">
@@ -17,7 +21,11 @@ export default function ProjectProgressList() {
                             <h1 className="text-2xl font-bold">Project Progress List</h1>
                         </div>
                         <div className="flex justify-end">
-                            <button type="button" className="group flex justify-center gap-2 items-center border border-white rounded-full text-white py-2 px-4 mx-8 cursor-pointer hover:text-black hover:bg-white transition-colors">
+                            <button
+                                type="button"
+                                className="group flex justify-center gap-2 items-center border border-white rounded-full text-white py-2 px-4 mx-8 cursor-pointer hover:text-black hover:bg-white transition-colors"
+                                onClick={() => navigate('/project/register')}
+                                >
                                 <AddIcon></AddIcon>
                                 <span className="text-base" style={{ fontFamily: "'Changa', sans-serif" }}>Project</span>
                             </button>
