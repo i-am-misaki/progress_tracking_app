@@ -1,4 +1,5 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, ConfigDict
+from uuid import UUID
 
 
 class RegisterRequest(BaseModel):
@@ -47,3 +48,17 @@ class PasswordResetRequest(BaseModel):
     """
     password: str
     token: str
+
+
+class ActiveUser(BaseModel):
+    """
+    ユーザー情報
+
+    Attributes:
+        uuid (UUID) : ユーザーの uuid
+        name (str)  : ユーザー名
+    """
+    uuid: UUID
+    name: str
+
+    model_config = ConfigDict(from_attributes=True)

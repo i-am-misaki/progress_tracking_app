@@ -1,11 +1,45 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
+
 
 import { IsEmpty } from "../libs/validation";
 
 
+export interface User {
+    uuid: string;
+    name: string;
+}
+
+
 export default function ProjectRegistration() {
     const navigate = useNavigate();
+    // PIC 選択用ユーザ情報
+    const [users, setUsers] = useState<User[]>([]);
+    const [inputValue, setInputValue] = useState("");
+    const [isOpen, setIsOpen] = useState(false);
+
+    // 全てのユーザ情報取得
+    useEffect(() => {
+        fetch('/api/member/users')
+        .then(res => {
+            if (!res.ok) {
+                throw new Error(`サーバーエラー: ${res.status}`);
+            }
+            return res.json();
+        })
+        .then(data => setUsers(data))
+        .catch(err => console.error("データ取得に失敗:", err));
+    }, []);
+
+    const filteredUsers = useMemo(() => {
+        if (!inputValue) return [];
+
+        return users.filter(user =>
+            user.name.toLowerCase().includes(inputValue.toLowerCase())
+        );
+    }, [inputValue, users]);
+
+
     const [projectName, setProjectName] = useState('');
     const [projectSummary, setProjectSummary] = useState('');
     const [client, setClient] = useState('');
@@ -39,7 +73,10 @@ export default function ProjectRegistration() {
             errMsgList.push(statusResult.message);
         }
 
-
+        if (errMsgList.length > 0) {
+            setErrMsg(errMsgList.join("\n"));
+            return;
+        }
     }
 
 
@@ -80,8 +117,10 @@ export default function ProjectRegistration() {
                                         <td>
                                             <div className="w-3/4 pt-10 pb-0.5">
                                                 <textarea
-                                                    className="w-full p-1 text-white focus:outline-none"
-                                                    placeholder="e.g. Automatic writing of data"></textarea>
+                                                    value={projectSummary}
+                                                    onChange={e => setProjectSummary(e.target.value)}
+                                                    placeholder="e.g. Automatic writing of data"
+                                                    className="w-full p-1 text-white focus:outline-none"></textarea>
                                             </div>
                                         </td>
                                     </tr>
@@ -108,7 +147,9 @@ export default function ProjectRegistration() {
                                             <div className="w-3/4 pt-10 pb-0.5">
                                                 <input
                                                     type="date"
-                                                    className="text-white" />
+                                                    value={eta}
+                                                    onChange={e => setEta(e.target.value)}
+                                                    className="text-white bg-transparent outline-none" />
                                             </div>
                                         </td>
                                     </tr>
@@ -117,11 +158,38 @@ export default function ProjectRegistration() {
                                             PIC
                                         </th>
                                         <td>
-                                            <div className="w-3/4 pt-10 pb-0.5">
-                                                <input
-                                                    type="text"
-                                                    placeholder="Input PIC"
-                                                    className="w-full pb-0.5 text-white focus:outline-none"/>
+                                            <div className="relative">
+                                                <div className="w-3/4 pt-10 pb-0.5">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Search by name"
+                                                        value={inputValue}
+                                                        onChange={e => {setInputValue(e.target.value);
+                                                            setIsOpen(true);
+                                                        }}
+                                                        onFocus={() => setIsOpen(true)}
+                                                        // フォーカスが外れたら少し遅れて閉じる（クリックイベントを優先するため）
+                                                        onBlur={() => setTimeout(() => setIsOpen(false), 200)}
+                                                        className="w-full pb-0.5 text-white focus:outline-none"
+                                                    />
+                                                    {/* 候補リストの表示 */}
+                                                    {isOpen && filteredUsers.length > 0 && (
+                                                        <ul className="absolute z-10 w-1/2 mt-1 bg-gray-800 border border-gray-700 rounded shadow-lg max-h-60 overflow-auto">
+                                                        {filteredUsers.map((user) => (
+                                                            <li
+                                                            key={user.uuid}
+                                                            onClick={() => {
+                                                                setInputValue(user.name);
+                                                                setIsOpen(false);
+                                                            }}
+                                                            className="p-2 text-white text-left hover:bg-gray-700 cursor-pointer transition-colors"
+                                                            >
+                                                            {user.name}
+                                                            </li>
+                                                        ))}
+                                                        </ul>
+                                                    )}
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>

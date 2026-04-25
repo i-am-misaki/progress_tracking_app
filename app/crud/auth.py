@@ -1,5 +1,6 @@
 from app.db.database import SessionLocal
 from app.models.user import User
+from app.schemas.auth import ActiveUser
 
 
 async def create_user(email: str, password: str, name: str) -> None:
@@ -56,3 +57,14 @@ async def update_user_password(user: User, new_password: str) -> None:
     user.password = new_password
     db.add(user)
     db.commit()
+
+
+async def get_users() -> list[ActiveUser]:
+    """
+    論理削除されていない全てのユーザーを取得する。
+
+    Returns:
+        list[ActiveUser] : 抽出したユーザーのリストを返す。
+    """
+    db = SessionLocal()
+    return db.query(User).filter(User.deleted_at == None).all()
