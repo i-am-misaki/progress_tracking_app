@@ -1,7 +1,7 @@
 /**
- * 案件情報インターフェース
+ * 案件新規登録情報インターフェース
  *
- * @interface Project
+ * @interface ProjectRegister
  * @property {string} project_name    - 案件名
  * @property {string} project_summary - 案件概要
  * @property {string} client          - クライアント名
@@ -13,9 +13,21 @@
  */
 
 type UUID = string;
-export interface Project {
+export interface ProjectRegister {
     project_name: string;
     project_summary: string;
+    client: string;
+    eta: string | null;
+    pic: UUID | null;
+    status: string;
+    priority: string;
+    progress: string;
+}
+
+
+export interface Project {
+    project_uuid: string;
+    project_name: string;
     client: string;
     eta: string | null;
     pic: UUID | null;

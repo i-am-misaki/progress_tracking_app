@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useMemo } from "react";
 
 import { IsEmpty } from "../libs/validation";
-import type { Project } from "../types/project";
+import type { ProjectRegister } from "../types/project";
 
 export interface User {
     uuid: string;
@@ -12,7 +12,7 @@ export interface User {
 
 
 // 初期値の設定
-const initialForm: Project = {
+const initialForm: ProjectRegister = {
     project_name: '',
     project_summary: '',
     client: '',
@@ -55,7 +55,7 @@ export default function ProjectRegistration() {
 
 
     const [errMsg, setErrMsg] = useState('');
-    const [formData, setFormData] = useState<Project>(initialForm);
+    const [formData, setFormData] = useState<ProjectRegister>(initialForm);
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({
