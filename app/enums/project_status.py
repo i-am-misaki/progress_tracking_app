@@ -2,9 +2,9 @@ from enum import Enum
 
 
 class ProjectStatus(str, Enum):
-    NOT_STARTED = "未着手"
-    IN_PROGRESS = "進行中"
-    REVIEWING = "レビュー/確認中"
-    COMPLETED = "完了"
-    ON_HOLD = "保留/一時停止"
-    CANCELLED = "中止"
+    NOT_STARTED = "not_started"
+    IN_PROGRESS = "in_progress"
+    REVIEWING = "reviewing"
+    COMPLETED = "completed"
+    ON_HOLD = "on_hold"
+    CANCELLED = "cancelled"
