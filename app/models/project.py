@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, DateTime, Enum, Date, func, UUID
+from sqlalchemy.orm import relationship
 from uuid import uuid4
 
 from app.db.database import Base
@@ -12,17 +13,17 @@ class Project(Base):
     プロジェクトの基本情報を定義するテーブルを表す。
 
     Attributes:
-        id (int)              : プロジェクトの一意の識別子
-        uuid (UUID)           : プロジェクトのUUID
-        title (str)           : プロジェクトのタイトル
-        summary (str)         : プロジェクトの概要
+        id (int)                   : プロジェクトの一意の識別子
+        uuid (UUID)                : プロジェクトのUUID
+        title (str)                : プロジェクトのタイトル
+        summary (str)              : プロジェクトの概要
         priority (ProjectPriority) : プロジェクトの優先度
         status (ProjectStatus)     : プロジェクトのステータス
-        delivery_date (Date)  : プロジェクトの納期
-        client (str)          : クライアントの名前
-        created_at (datetime) : プロジェクトが作成された日時
-        updated_at (datetime) : プロジェクトが最後に更新された日時
-        deleted_at (datetime) : プロジェクトが削除された日時（論理削除の場合）
+        delivery_date (date)       : プロジェクトの納期
+        client (str)               : クライアントの名前
+        created_at (datetime)      : プロジェクトが作成された日時
+        updated_at (datetime)      : プロジェクトが最後に更新された日時
+        deleted_at (datetime)      : プロジェクトが削除された日時（論理削除の場合）
     """
     __tablename__ = "projects"
 
@@ -33,9 +34,12 @@ class Project(Base):
     priority = Column(Enum(ProjectPriority), nullable=False)
     status = Column(Enum(ProjectStatus), nullable=False)
     delivery_date = Column(Date, nullable=True)
-    pic = Column(UUID, nullable=True)
-    progress = Column(String, nullable=True)
     client = Column(String, nullable=False)
     created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
     updated_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now(), onupdate=func.now())
     deleted_at = Column(DateTime(timezone=True))
+
+    # 進捗履歴へのリレーション
+    trackings = relationship("ProcessTracking", back_populates="project")
+    # 担当者（中間テーブル）へのリレーション
+    assignments = relationship("ProjectAssignment", back_populates="project")
