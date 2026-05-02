@@ -1,3 +1,7 @@
+type UUID = string;
+
+
+
 /**
  * 案件新規登録情報インターフェース
  *
@@ -11,8 +15,6 @@
  * @property {string} priority        - 優先度
  * @property {string} progress        - 進捗状況
  */
-
-type UUID = string;
 export interface ProjectRegister {
     project_name: string;
     project_summary: string;
@@ -24,14 +26,25 @@ export interface ProjectRegister {
     progress: string;
 }
 
-
+/**
+ * 案件一覧画面表示インターフェース
+ *
+ * @interface Project
+ * @property {string} project_uuid    - 案件のUUID
+ * @property {string} project_name    - 案件名
+ * @property {string} client          - クライアント名
+ * @property {string} eta             - 納期
+ * @property {string} pic             - 担当者
+ * @property {string} status          - 進捗状態
+ * @property {string} latest_progress - 最新の進捗
+ */
 export interface Project {
     project_uuid: string;
     project_name: string;
     client: string;
-    eta: string | null;
-    pic: UUID | null;
+    eta: string;
+    pic: UUID;
     status: string;
     priority: string;
-    progress: string;
+    latest_progress: string;
 }
