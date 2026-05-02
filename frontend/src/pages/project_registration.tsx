@@ -1,14 +1,28 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useMemo } from "react";
 
-
 import { IsEmpty } from "../libs/validation";
-
+import type { Project } from "../types/project";
 
 export interface User {
     uuid: string;
     name: string;
 }
+
+
+
+// 初期値の設定
+const initialForm: Project = {
+    project_name: '',
+    project_summary: '',
+    client: '',
+    eta: '',
+    pic: '',
+    status: 'not_started',
+    priority: 'medium',
+    progress: ''
+};
+
 
 
 export default function ProjectRegistration() {
@@ -40,52 +54,83 @@ export default function ProjectRegistration() {
     }, [inputValue, users]);
 
 
-    const [projectName, setProjectName] = useState('');
-    const [projectSummary, setProjectSummary] = useState('');
-    const [client, setClient] = useState('');
-    const [eta, setEta] = useState('');
-    const [status, setStatus] = useState('');
-    const [priority, setPriority] = useState('');
-    const [pic, setPic] = useState('');
-    const [progress, setProgress] = useState('');
     const [errMsg, setErrMsg] = useState('');
+    const [formData, setFormData] = useState<Project>(initialForm);
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value // name属性とProjectのキー名を一致させておく必要がある
+        }));
+    };
 
     const handleProjectRegistration = async () => {
         setErrMsg(""); // エラーをクリア
         let errMsgList: string[] = [];
 
         // projectName バリデーション
-        const pnResult = IsEmpty(projectName);
+        const pnResult = IsEmpty(formData.project_name);
         if (!pnResult.isValid){
             errMsgList.push(pnResult.message);
         }
         // projectSummary バリデーション
-        const psResult = IsEmpty(projectSummary);
+        const psResult = IsEmpty(formData.project_summary);
         if (!psResult.isValid){
             errMsgList.push(psResult.message);
         }
         // client バリデーション
-        const clientResult = IsEmpty(client);
+        const clientResult = IsEmpty(formData.client);
         if (!clientResult.isValid){
             errMsgList.push(clientResult.message);
         }
         // status バリデーション
-        const statusResult = IsEmpty(status);
+        const statusResult = IsEmpty(formData.status);
         if (!statusResult.isValid){
             errMsgList.push(statusResult.message);
         }
 
         if (errMsgList.length > 0) {
             setErrMsg(errMsgList.join("\n"));
-            return;
+        } else{
+            const payload = {
+                ...formData,
+                // 空文字だったら null に変換
+                eta: formData.eta === '' ? null : formData.eta,
+                pic: formData.pic === '' ? null : formData.pic
+            };
+            try {
+                const response = await fetch('/api/member/project/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+                if (response.ok) {
+                    navigate("/projects");
+                } else {
+                    const errorData = await response.json();
+                    setErrMsg(errorData.detail || 'Project registration failed.');
+                }
+            } catch (error) {
+                setErrMsg('Server connection failed.');
+            };
         }
+
+
     }
 
 
     return (
         <div className="h-screen w-screen">
-            <div className="flex justify-end">
-                <button type="button" className="border border-white text-white py-2 px-8 my-6 mx-8 cursor-pointer hover:bg-white transition-colors">
+            <div className="flex justify-between items-center px-8 py-4">
+                <button
+                    type="button"
+                    className="border border-white text-white py-2 px-8 cursor-pointer hover:bg-white hover:text-black transition-colors"
+                    onClick={() => navigate('/projects')}
+                    >
+                    Back
+                </button>
+                <button type="button"
+                        className="border border-white text-white py-2 px-8 cursor-pointer hover:bg-white transition-colors">
                     <span className="text-base" style={{ fontFamily: "'Changa', sans-serif" }}>Logout</span>
                 </button>
             </div>
@@ -105,8 +150,9 @@ export default function ProjectRegistration() {
                                             <div className="w-full pt-6 pb-0.5">
                                                 <input
                                                     type="text"
-                                                    value={projectName}
-                                                    onChange={e => setProjectName(e.target.value)}
+                                                    name="project_name"
+                                                    value={formData.project_name}
+                                                    onChange={handleChange}
                                                     placeholder="Input Project Name"
                                                     className="w-full pb-0.5 text-white focus:outline-none"/>
                                             </div>
@@ -119,8 +165,9 @@ export default function ProjectRegistration() {
                                         <td>
                                             <div className="w-full pt-6 pb-0.5">
                                                 <textarea
-                                                    value={projectSummary}
-                                                    onChange={e => setProjectSummary(e.target.value)}
+                                                    name="project_summary"
+                                                    value={formData.project_summary}
+                                                    onChange={handleChange}
                                                     placeholder="e.g. Automatic writing of data"
                                                     className="w-full p-1 text-white focus:outline-none"></textarea>
                                             </div>
@@ -134,8 +181,9 @@ export default function ProjectRegistration() {
                                             <div className="w-full pt-6 pb-0.5">
                                                 <input
                                                     type="text"
-                                                    value={client}
-                                                    onChange={e => setClient(e.target.value)}
+                                                    name="client"
+                                                    value={formData.client}
+                                                    onChange={handleChange}
                                                     placeholder="Input Client. e.g. General affairs department"
                                                     className="w-full pb-0.5 text-white focus:outline-none"/>
                                             </div>
@@ -149,8 +197,9 @@ export default function ProjectRegistration() {
                                             <div className="w-1/3 pt-10 pb-0.5">
                                             <input
                                                 type="date"
-                                                value={eta}
-                                                onChange={e => setEta(e.target.value)}
+                                                name="eta"
+                                                value={formData.eta ?? ""}
+                                                onChange={handleChange}
                                                 className="text-white text-left bg-transparent outline-none [&::-webkit-calendar-picker-indicator]:invert" />
                                             </div>
                                         </td>
@@ -164,6 +213,7 @@ export default function ProjectRegistration() {
                                                 <div className="w-full pt-6 pb-0.5">
                                                     <input
                                                         type="text"
+                                                        name="pic"
                                                         placeholder="Search by name"
                                                         value={inputValue}
                                                         onChange={e => {setInputValue(e.target.value);
@@ -182,7 +232,7 @@ export default function ProjectRegistration() {
                                                             key={user.uuid}
                                                             onClick={() => {
                                                                 setInputValue(user.name);
-                                                                setPic(user.uuid);
+                                                                {handleChange};
                                                                 setIsOpen(false);
                                                             }}
                                                             className="p-2 text-white text-left hover:bg-gray-700 cursor-pointer transition-colors"
@@ -208,8 +258,8 @@ export default function ProjectRegistration() {
                                                         name="priority"
                                                         id="high"
                                                         value="high"
-                                                        checked={priority === "high"}
-                                                        onChange={e => setPriority(e.target.value)}
+                                                        checked={formData.priority === "high"}
+                                                        onChange={handleChange}
                                                         className="hidden peer" />
                                                     <label
                                                         htmlFor="high"
@@ -224,8 +274,8 @@ export default function ProjectRegistration() {
                                                         name="priority"
                                                         id="medium"
                                                         value="medium"
-                                                        checked={priority === "medium"}
-                                                        onChange={e => setPriority(e.target.value)}
+                                                        checked={formData.priority === "medium"}
+                                                        onChange={handleChange}
                                                         className="hidden peer" />
                                                     <label
                                                         htmlFor="medium"
@@ -240,8 +290,8 @@ export default function ProjectRegistration() {
                                                         name="priority"
                                                         id="low"
                                                         value="low"
-                                                        checked={priority === "low"}
-                                                        onChange={e => setPriority(e.target.value)}
+                                                        checked={formData.priority === "low"}
+                                                        onChange={handleChange}
                                                         className="hidden peer" />
                                                     <label
                                                         htmlFor="low"
@@ -265,8 +315,8 @@ export default function ProjectRegistration() {
                                                         name="status"
                                                         id="in_progress"
                                                         value="in_progress"
-                                                        checked={status === "in_progress"}
-                                                        onChange={e => setStatus(e.target.value)}
+                                                        checked={formData.status === "in_progress"}
+                                                        onChange={handleChange}
                                                         className="hidden peer" />
                                                     <label
                                                         htmlFor="in_progress"
@@ -281,8 +331,8 @@ export default function ProjectRegistration() {
                                                         name="status"
                                                         id="on_hold"
                                                         value="on_hold"
-                                                        checked={status === "on_hold"}
-                                                        onChange={e => setStatus(e.target.value)}
+                                                        checked={formData.status === "on_hold"}
+                                                        onChange={handleChange}
                                                         className="hidden peer" />
                                                     <label
                                                         htmlFor="on_hold"
@@ -297,8 +347,8 @@ export default function ProjectRegistration() {
                                                         name="status"
                                                         id="canceled"
                                                         value="canceled"
-                                                        checked={status === "canceled"}
-                                                        onChange={e => setStatus(e.target.value)}
+                                                        checked={formData.status === "canceled"}
+                                                        onChange={handleChange}
                                                         className="hidden peer" />
                                                     <label
                                                         htmlFor="canceled"
@@ -313,8 +363,8 @@ export default function ProjectRegistration() {
                                                         name="status"
                                                         id="not_started"
                                                         value="not_started"
-                                                        checked={status === "not_started"}
-                                                        onChange={e => setStatus(e.target.value)}
+                                                        checked={formData.status === "not_started"}
+                                                        onChange={handleChange}
                                                         className="hidden peer" />
                                                     <label
                                                         htmlFor="not_started"
@@ -329,8 +379,8 @@ export default function ProjectRegistration() {
                                                         name="status"
                                                         id="completed"
                                                         value="completed"
-                                                        checked={status === "completed"}
-                                                        onChange={e => setStatus(e.target.value)}
+                                                        checked={formData.status === "completed"}
+                                                        onChange={handleChange}
                                                         className="hidden peer" />
                                                     <label
                                                         htmlFor="completed"
@@ -350,8 +400,9 @@ export default function ProjectRegistration() {
                                             <div className="w-full pt-4 pb-0.5">
                                                 <input
                                                     type="text"
-                                                    value={progress}
-                                                    onChange={e => setProgress(e.target.value)}
+                                                    name="progress"
+                                                    value={formData.progress}
+                                                    onChange={handleChange}
                                                     placeholder="Input Latest Progress"
                                                     className="w-full pb-0.5 text-white focus:outline-none"/>
                                             </div>
@@ -359,14 +410,7 @@ export default function ProjectRegistration() {
                                     </tr>
                                 </tbody>
                             </table>
-                            <div className="flex justify-center items-center gap-4 mt-4">
-                                <button
-                                    type="button"
-                                    className="group border border-white text-white py-2 px-8 mt-6 cursor-pointer hover:bg-white hover:text-black transition-colors"
-                                    onClick={() => navigate('/projects')}
-                                    >
-                                    Back
-                                </button>
+                            <div className="flex justify-center items-center mt-4">
                                 <button
                                     type="button"
                                     className="group border border-white text-white py-2 px-8 mt-6 cursor-pointer hover:bg-white hover:text-black transition-colors"
