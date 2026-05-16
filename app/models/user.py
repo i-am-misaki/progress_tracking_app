@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, DateTime, func, UUID, Boolean
+from sqlalchemy.orm import relationship
 from uuid import uuid4
 
 from app.db.database import Base
@@ -31,3 +32,5 @@ class User(Base):
     created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
     updated_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now(), onupdate=func.now())
     deleted_at = Column(DateTime(timezone=True))
+
+    project_assignments = relationship("ProjectAssignment", back_populates="user")

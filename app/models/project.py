@@ -40,6 +40,6 @@ class Project(Base):
     deleted_at = Column(DateTime(timezone=True))
 
     # 進捗履歴へのリレーション
-    trackings = relationship("ProcessTracking", back_populates="project")
+    process_trackings = relationship("ProcessTracking", back_populates="project")
     # 担当者（中間テーブル）へのリレーション
-    assignments = relationship("ProjectAssignment", back_populates="project")
+    project_assignments = relationship("ProjectAssignment", back_populates="project")

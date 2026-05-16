@@ -29,4 +29,4 @@ class ProcessTracking(Base):
     deleted_at = Column(DateTime(timezone=True))
 
     user = relationship("User")
-    project = relationship("Project", back_populates="trackings")
+    project = relationship("Project", back_populates="process_trackings")
