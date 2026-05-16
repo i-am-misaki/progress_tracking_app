@@ -95,7 +95,7 @@ export default function ProjectProgressList() {
                                                         <p>{project.eta}</p>
                                                     </td>
                                                     <td className="w-40 p-2">
-                                                        <p>{project.status}</p>
+                                                        <p>{project.status.toUpperCase().replace('_', ' ')}</p>
                                                     </td>
                                                     <td className="p-2">
                                                         <p>{project.latest_progress}</p>
@@ -103,19 +103,19 @@ export default function ProjectProgressList() {
                                                     <td className="w-40 p-2">
                                                         <div className="flex justify-center items-center gap-3" style={{ fontFamily: "'Changa', sans-serif" }}>
                                                             <button type="button"
-                                                                    className=" text-white py-1 px-2 cursor-pointer transition-colors hover:text-amber-400"
+                                                                    className=" text-white py-1 px-2 cursor-pointer transition-colors hover:text-black"
                                                                 >
                                                                 <EditIcon />
                                                             </button>
                                                             <button type="button"
-                                                                    className=" text-white py-1 px-2 cursor-pointer transition-colors hover:text-amber-400"
+                                                                    className=" text-white py-1 px-2 cursor-pointer transition-colors hover:text-black"
                                                                 >
                                                                 <DeleteIcon />
                                                             </button>
                                                         </div>
                                                     </td>
                                                 </tr>
-                                            )};
+                                            )}
                                         </tbody>
                                     </table>
                                 </div>
@@ -131,5 +131,5 @@ export default function ProjectProgressList() {
                 </div>
             </div>
         </div>
-    );
+    )
 }

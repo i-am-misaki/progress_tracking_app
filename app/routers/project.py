@@ -3,7 +3,7 @@ from fastapi import APIRouter
 from app.crud.auth import get_users
 from app.crud.project import add_project, get_projects
 from app.schemas.auth import ActiveUser
-from app.schemas.project import ProjectRegistration, Project
+from app.schemas.project import ProjectRegistration, ProjectSummary
 
 
 router = APIRouter(prefix="/member", tags=["member"])
@@ -21,7 +21,7 @@ async def get_active_users() -> list[ActiveUser]:
 
 
 @router.get("/projects")
-async def get_active_projects() -> list[Project]:
+async def get_active_projects() -> list[ProjectSummary]:
     """
     論理削除されていない、ステータスが完了以外の案件情報を全て取得する。
 

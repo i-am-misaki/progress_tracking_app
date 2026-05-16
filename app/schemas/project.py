@@ -31,7 +31,7 @@ class ProjectRegistration(BaseModel):
 
 
 
-class Project(BaseModel):
+class ProjectSummary(BaseModel):
     """
     案件一覧画面に表示する案件情報モデル
 
@@ -44,7 +44,7 @@ class Project(BaseModel):
         status(ProjectStatus) : 進捗状態
         latest_progress(str)  : 最新の進捗
     """
-    project_uuid: UUID
+    project_uuid: Optional[UUID]
     project_name: str
     client: str
     eta: str

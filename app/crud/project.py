@@ -1,8 +1,8 @@
 from typing import Optional
-from datetime import date
+from datetime import date, datetime
 
 from app.db.database import SessionLocal
-from app.schemas.project import ProjectRegistration
+from app.schemas.project import ProjectRegistration, ProjectSummary
 from app.models.project import Project
 from app.models.user import User
 from app.models.project_assignment import ProjectAssignment
@@ -22,10 +22,13 @@ async def add_project(request: ProjectRegistration) -> None:
     # ETA の型を datetime.date 型に変換
     eta: Optional[date] = None
     if request.eta:
-        eta = request.eta.strptime("%Y-%m-%d")
+        if isinstance(request.eta, str):
+            eta = datetime.strptime(request.eta, "%Y-%m-%d").date()
+        else:
+            eta = request.eta
 
     # 案件登録
-    new_project = Project(
+    new_project = ProjectRegistration(
         title=request.project_name,
         summary=request.project_summary,
         priority=request.priority,
@@ -49,7 +52,7 @@ async def add_project(request: ProjectRegistration) -> None:
     if request.progress:
         new_process = ProcessTracking(
             content=request.progress,
-            project_id=new_process.id,
+            project_id=new_project.id,
             # ログインユーザーのIDを格納
             user_id=1
         )
@@ -82,20 +85,28 @@ async def get_projects() -> list[Project]:
 
     project_list: list = []
     for p in query_results:
+        # 進捗の取得
         latest_track = None
         if p.process_trackings:
             latest_track = sorted(p.process_trackings, key=lambda x: x.id, reverse=True)[0]
 
-        pic_user = p.project_assign[0].user.name if p.project_assign else ""
+        # 担当者(User)の取得
+        assigned_user = None
+        if p.project_assignments and p.project_assignments[0].user:
+            assigned_user = p.project_assignments[0].user
 
-        p_model = Project(
-            project_uuid=p.project.uuid,
-            project_name=p.project_name,
+        p_model = ProjectSummary(
+            project_uuid=p.uuid,
+            project_name=p.title,
             client=p.client,
-            eta=p.delivery_date.strftime("%Y%m%d") if p.delivery_date else "",
-            pic=pic_user.uuid,
+            # 日付のフォーマット
+            eta=f"{p.delivery_date.year}/{p.delivery_date.month}/{p.delivery_date.day}" if p.delivery_date else "",
+            # Userオブジェクトがあればそのuuidを、なければ空文字を入れる
+            pic=assigned_user.uuid if assigned_user else None,
             status=p.status,
             latest_progress=latest_track.progress_content if latest_track else ""
         )
         project_list.append(p_model)
+
+    db.close() # セッションを閉じるのを忘れずに
     return project_list
