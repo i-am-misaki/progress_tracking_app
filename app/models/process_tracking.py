@@ -28,5 +28,5 @@ class ProcessTracking(Base):
     updated_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now(), onupdate=func.now())
     deleted_at = Column(DateTime(timezone=True))
 
-    user = relationship("User", back_populates="project_assignments")
-    project = relationship("Project", back_populates="project_assignments")
+    user = relationship("User")
+    project = relationship("Project", back_populates="process_trackings")

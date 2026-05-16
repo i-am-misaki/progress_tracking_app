@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship
 from app.db.database import Base
 
 
-class ProjectAssignments(Base):
+class ProjectAssignment(Base):
     """
     プロジェクト割り当てのモデルクラス。
     ユーザーがプロジェクトに割り当てられる関係を定義するテーブルを表す。
