@@ -5,7 +5,7 @@ from app.db.database import SessionLocal
 from app.schemas.project import ProjectRegistration
 from app.models.project import Project
 from app.models.user import User
-from app.models.project_assignment import ProjectAssignments
+from app.models.project_assignment import ProjectAssignment
 from app.models.process_tracking import ProcessTracking
 from app.crud.auth import get_user_by_uuid
 
@@ -39,7 +39,7 @@ async def add_project(request: ProjectRegistration) -> None:
     # 案件担当者情報の登録
     project_pic = db.query(User).filter(User.uuid == request.pic).first()
     if project_pic:
-        new_assignment = ProjectAssignments(
+        new_assignment = ProjectAssignment(
             project_id=new_project.id,
             user_id=project_pic.id
         )
