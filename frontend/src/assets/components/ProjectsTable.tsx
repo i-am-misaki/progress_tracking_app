@@ -5,7 +5,6 @@ import { ProjectRow } from './ProjectRow';
 
 export const ProjectsTable = ({ projects }: { projects: Project[]}) => {
 
-
   return (
     <table className="w-full table-auto border-collapse">
         <thead className="sticky top-0 z-10 bg-gray-400">
@@ -35,6 +34,7 @@ export const ProjectsTable = ({ projects }: { projects: Project[]}) => {
             { projects.map((project) =>
                 <ProjectRow
                     project={project}
+                    key={project.project_uuid}
                 />
             )}
         </tbody>
