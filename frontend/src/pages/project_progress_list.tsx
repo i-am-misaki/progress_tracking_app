@@ -2,9 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from "react";
 
 import { AddIcon } from '../assets/icons/AddIcon';
-import { EditIcon } from '../assets/icons/EditIcon';
-import { DeleteIcon } from '../assets/icons/DeleteIcon';
 import type { Project } from '../types/project';
+import { ProjectsTable } from '../assets/components/ProjectsTable';
 
 
 
@@ -58,66 +57,7 @@ export default function ProjectProgressList() {
                                 <p className="text-white text-center">Loading...</p>
                             ) : projects && projects.length > 0 ? (
                                 <div className="max-h-[550px] overflow-y-auto overflow-x-auto w-full px-4">
-                                    <table className="w-full table-auto border-collapse">
-                                        <thead className="sticky top-0 z-10 bg-gray-400">
-                                            <tr className="text-xl text-left" style={{ fontFamily: "'Changa', sans-serif" }}>
-                                                <th className="w-64 p-2 shadow-[inset_0_-2px_0_0_#000000]">
-                                                    <p>Project Name</p>
-                                                </th>
-                                                <th className="w-40 p-2 shadow-[inset_0_-2px_0_0_#000000]">
-                                                    <p>Client</p>
-                                                </th>
-                                                <th className="w-32 p-2 shadow-[inset_0_-2px_0_0_#000000]">
-                                                    <p>ETA</p>
-                                                </th>
-                                                <th className="w-40 p-2 shadow-[inset_0_-2px_0_0_#000000]">
-                                                    <p>Status</p>
-                                                </th>
-                                                <th className="p-2 shadow-[inset_0_-2px_0_0_#000000]">
-                                                    <p>Latest Progress</p>
-                                                </th>
-                                                <th className="w-40 p-2 shadow-[inset_0_-2px_0_0_#000000]">
-                                                    {/* 編集/削除 ボタン表示列 */}
-                                                    <p></p>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="bg-gray-400/50">
-                                            { projects.map((project) =>
-                                                <tr className="border-b border-slate-200">
-                                                    <td className="w-64 p-2">
-                                                        <p>{project.project_name}</p>
-                                                    </td>
-                                                    <td className="w-40 p-2">
-                                                        <p>{project.client}</p>
-                                                    </td>
-                                                    <td className="w-32 p-2">
-                                                        <p>{project.eta}</p>
-                                                    </td>
-                                                    <td className="w-40 p-2">
-                                                        <p>{project.status.toUpperCase().replace('_', ' ')}</p>
-                                                    </td>
-                                                    <td className="p-2">
-                                                        <p>{project.latest_progress}</p>
-                                                    </td>
-                                                    <td className="w-40 p-2">
-                                                        <div className="flex justify-center items-center gap-3" style={{ fontFamily: "'Changa', sans-serif" }}>
-                                                            <button type="button"
-                                                                    className=" text-white py-1 px-2 cursor-pointer transition-colors hover:text-black"
-                                                                >
-                                                                <EditIcon />
-                                                            </button>
-                                                            <button type="button"
-                                                                    className=" text-white py-1 px-2 cursor-pointer transition-colors hover:text-black"
-                                                                >
-                                                                <DeleteIcon />
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            )}
-                                        </tbody>
-                                    </table>
+                                    <ProjectsTable projects={projects} />
                                 </div>
                             ) : (
                                 <div className="flex flex-col justify-center items-center py-20 bg-gray-400/50 rounded-md mx-4">
