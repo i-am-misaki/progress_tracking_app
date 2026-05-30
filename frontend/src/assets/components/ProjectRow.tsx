@@ -6,11 +6,16 @@ import { SaveIcon } from '../icons/SaveIcon';
 import { CancelIcon } from '../icons/CancelIcon';
 import type { Project } from '../../types/project';
 import { ProjectStatusList } from '../../types/status';
+import { showToast } from './Toast';
+
 
 // 行専用のコンポーネント
 export const ProjectRow = ({ project, key }: { project: Project; key: string; }) => {
   const [isEditMode, setIsEditMode] = useState(false);
-  console.log(project.eta)
+  const defaultEta = project.eta;
+  const defaultStatus = project.status;
+  const [eta, setEta] = useState(project.eta);
+  const [status, setStatus] = useState(project.status);
 
   const paddingZero = (rawDateStr: string) => {
     if (!rawDateStr) return '';
@@ -27,9 +32,20 @@ export const ProjectRow = ({ project, key }: { project: Project; key: string; })
   }
 
 
-  const handleStatusChange = (value: string) => {
-    console.log('Status changed to: ', value);
-    // ここでAPIに変更を送る処理を実装する
+  const handleSave = () => {
+    if (status == defaultStatus){
+        if (eta == paddingZero(defaultEta) || eta == defaultEta) {
+            const message = '変更がありません';
+            const type = 'info';
+            showToast({ message, type });
+            return
+        }
+    }
+
+    console.log('変更あり');
+
+
+
   }
 
   return (
@@ -47,6 +63,7 @@ export const ProjectRow = ({ project, key }: { project: Project; key: string; })
                 <input
                     type="date"
                     defaultValue={paddingZero(project.eta)}
+                    onChange={(e) => setEta(e.target.value)}
                 />
             ) : (
               <p className="pr-11 tracking-wide">
@@ -60,7 +77,7 @@ export const ProjectRow = ({ project, key }: { project: Project; key: string; })
             {isEditMode ? (
                 <select
                     defaultValue={project.status}
-                    onChange={(e) => handleStatusChange(e.target.value)}
+                    onChange={(e) => setStatus(e.target.value)}
                 >
                     {ProjectStatusList.map((status) => (
                         <option key={status} value={status}>
@@ -79,6 +96,7 @@ export const ProjectRow = ({ project, key }: { project: Project; key: string; })
                 {isEditMode ? (
                     <div className="flex justify-end items-center gap-3">
                         <button type="button"
+                                onClick={handleSave}
                                 className="text-white cursor-pointer transition-colors hover:text-black"
                                 >
                             <SaveIcon />
