@@ -1,9 +1,9 @@
 from fastapi import APIRouter
 
 from app.crud.auth import get_users
-from app.crud.project import add_project, get_projects
+from app.crud.project import add_project, get_projects, update_project_row
 from app.schemas.auth import ActiveUser
-from app.schemas.project import ProjectRegistration, ProjectSummary
+from app.schemas.project import ProjectRegistration, ProjectSummary, ProjectRowUpdate
 
 
 router = APIRouter(prefix="/member", tags=["member"])
@@ -40,4 +40,16 @@ async def project_registration(request: ProjectRegistration):
     return {
         "status_code": "200",
         "message": "Project registration successful"
+    }
+
+
+@router.put("/project/update/row")
+async def project_row_update(request: ProjectRowUpdate):
+    """
+    案件一覧画面の行更新を行う。
+    """
+    await update_project_row(request)
+    return {
+        "status_code": "200",
+        "message": "Project row update successful"
     }

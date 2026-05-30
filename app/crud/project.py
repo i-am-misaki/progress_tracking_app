@@ -2,7 +2,7 @@ from typing import Optional
 from datetime import date, datetime
 
 from app.db.database import SessionLocal
-from app.schemas.project import ProjectRegistration, ProjectSummary
+from app.schemas.project import ProjectRegistration, ProjectSummary, ProjectRowUpdate
 from app.models.project import Project
 from app.models.user import User
 from app.models.project_assignment import ProjectAssignment
@@ -22,10 +22,7 @@ async def add_project(request: ProjectRegistration) -> None:
     # ETA の型を datetime.date 型に変換
     eta: Optional[date] = None
     if request.eta:
-        if isinstance(request.eta, str):
-            eta = datetime.strptime(request.eta, "%Y-%m-%d").date()
-        else:
-            eta = request.eta
+        eta = _convert_to_date(request.eta)
 
     # 案件登録
     new_project = ProjectRegistration(
@@ -110,3 +107,50 @@ async def get_projects() -> list[Project]:
 
     db.close() # セッションを閉じるのを忘れずに
     return project_list
+
+
+async def update_project_row(request: ProjectRowUpdate) -> None:
+    """
+    案件一覧画面の行更新を行う。
+
+    Args
+        request(ProjectRowUpdate) : 案件一覧画面の行更新のリクエストモデル
+    """
+    db = SessionLocal()
+    query_result = (
+        db.query(Project)
+            .filter(Project.uuid == request.project_uuid)
+            .first()
+    )
+    if not query_result:
+        raise ValueError("指定されたUUIDの案件が見つかりませんでした")
+
+    eta: Optional[date] = None
+    if request.eta:
+        eta = _convert_to_date(request.eta)
+
+    query_result.delivery_date = eta
+    query_result.status = request.status
+    try:
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise e
+    finally:
+        db.close()
+
+
+def _convert_to_date(rawEta: Optional[str]) -> Optional[date]:
+    """
+    文字列で渡されたETAをdatetime.date型に変換する。
+
+    Args
+        rawEta(Optional[str]) : 文字列で渡されたETA
+    Returns
+        Optional[date] : datetime.date型に変換されたETA
+    """
+    if isinstance(rawEta, str):
+        eta = datetime.strptime(rawEta, "%Y-%m-%d").date()
+    else:
+        eta = rawEta
+    return eta
