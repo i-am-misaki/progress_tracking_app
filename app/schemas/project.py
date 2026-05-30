@@ -30,6 +30,27 @@ class ProjectRegistration(BaseModel):
     progress: Optional[str]
 
 
+class Project(BaseModel):
+    """
+    案件の基本情報モデル。
+
+    Attributes
+        project_uuid(UUID)    : 案件の UUID
+        project_name(str)     : 案件名
+        client(str)           : 依頼元
+        eta(str)              : 納期
+        pic(Optional[UUID])   : 担当者
+        status(ProjectStatus) : 進捗状態
+        priority(ProjectPriority) : 優先度
+    """
+    project_name: str
+    summary: str
+    priority: ProjectPriority
+    status: ProjectStatus
+    eta: str
+    client: str
+
+
 
 class ProjectSummary(BaseModel):
     """
