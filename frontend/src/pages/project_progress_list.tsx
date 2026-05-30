@@ -14,7 +14,8 @@ export default function ProjectProgressList() {
     // 読み込み状態管理
     const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
+    // データを取得する関数
+    const fetchProjects = async () => {
         setIsLoading(true);
         fetch('/api/member/projects')
             .then(res => {
@@ -27,6 +28,10 @@ export default function ProjectProgressList() {
             )
             .catch(err => console.error('案件一覧の取得に失敗: ', err))
             .finally(() => setIsLoading(false))
+    };
+
+    useEffect(() => {
+        fetchProjects();
     }, []);
 
 
@@ -57,7 +62,7 @@ export default function ProjectProgressList() {
                                 <p className="text-white text-center">Loading...</p>
                             ) : projects && projects.length > 0 ? (
                                 <div className="max-h-[550px] overflow-y-auto overflow-x-auto w-full px-4">
-                                    <ProjectsTable projects={projects} />
+                                    <ProjectsTable projects={projects} onRefresh={fetchProjects} />
                                 </div>
                             ) : (
                                 <div className="flex flex-col justify-center items-center py-20 bg-gray-400/50 rounded-md mx-4">

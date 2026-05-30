@@ -4,13 +4,15 @@ import { DeleteIcon } from '../icons/DeleteIcon';
 import { EditIcon } from '../icons/EditIcon';
 import { SaveIcon } from '../icons/SaveIcon';
 import { CancelIcon } from '../icons/CancelIcon';
-import type { Project } from '../../types/project';
+import type { Project, ProjectRowUpdate } from '../../types/project';
 import { ProjectStatusList } from '../../types/status';
 import { showToast } from './Toast';
+import ProjectProgressList from '../../pages/project_progress_list';
+
 
 
 // 行専用のコンポーネント
-export const ProjectRow = ({ project, key }: { project: Project; key: string; }) => {
+export const ProjectRow = ({ project, key, onRefresh }: { project: Project; key: string; onRefresh: () => void }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const defaultEta = project.eta;
   const defaultStatus = project.status;
@@ -19,6 +21,8 @@ export const ProjectRow = ({ project, key }: { project: Project; key: string; })
 
   const paddingZero = (rawDateStr: string) => {
     if (!rawDateStr) return '';
+    // すでに年月日がハイフン区切りの場合はそのまま返す
+    if (rawDateStr.includes('-')) return rawDateStr;
 
     // 年月日に分割し、０埋めを行う
     const parts = rawDateStr.split('/');
@@ -32,20 +36,40 @@ export const ProjectRow = ({ project, key }: { project: Project; key: string; })
   }
 
 
-  const handleSave = () => {
+  const handleSave = async () => {
+
     if (status == defaultStatus){
         if (eta == paddingZero(defaultEta) || eta == defaultEta) {
-            const message = '変更がありません';
-            const type = 'info';
-            showToast({ message, type });
+            showToast({ message: '変更がありません', type: 'info' });
             return
         }
     }
 
-    console.log('変更あり');
+    const newProjectRow: ProjectRowUpdate = {
+        project_uuid: project.project_uuid,
+        eta: paddingZero(eta),
+        status: status
+    }
 
+    try{
+        const response = await fetch('api/member/project/update/row', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newProjectRow)
+        });
+        if (response.ok){
+            showToast({ message: '変更を保存しました', type: 'success' });
+            setIsEditMode(false);
+            onRefresh();
+        } else {
+            showToast({ message: '保存に失敗しました', type: 'error' });
+        }
 
-
+    }catch(error){
+        showToast({ message: '通信エラーが発生しました', type: 'error' });
+    }
   }
 
   return (

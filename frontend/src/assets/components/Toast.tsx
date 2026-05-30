@@ -1,7 +1,9 @@
 import Toast from 'typescript-toastify';
 import "typescript-toastify/lib/style.css";
 
-type ToastType = "success" | "error" | "warning" | "info" | "default";
+import type { ToastType } from '../../types/toast';
+
+
 
 export const showToast = ({ message, type }: { message: string; type: ToastType }) => {
     const toast = new Toast({

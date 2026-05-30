@@ -48,3 +48,18 @@ export interface Project {
     priority: string;
     latest_progress: string;
 }
+
+
+/**
+ * 案件一覧画面にて行ごとの更新インターフェース
+ *
+ * @interface ProjectRowUpdate
+ * @property {string} project_uuid    - 案件のUUID
+ * @property {string} eta             - 納期
+ * @property {string} status          - 進捗状態
+ */
+export interface ProjectRowUpdate {
+    project_uuid: string;
+    eta: string;
+    status: string;
+}

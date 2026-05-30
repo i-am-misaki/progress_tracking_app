@@ -3,7 +3,7 @@ import type { Project } from '../../types/project';
 import { ProjectRow } from './ProjectRow';
 
 
-export const ProjectsTable = ({ projects }: { projects: Project[]}) => {
+export const ProjectsTable = ({ projects, onRefresh }: { projects: Project[]; onRefresh: () => void}) => {
 
   return (
     <table className="w-full table-auto border-collapse">
@@ -35,6 +35,7 @@ export const ProjectsTable = ({ projects }: { projects: Project[]}) => {
                 <ProjectRow
                     project={project}
                     key={project.project_uuid}
+                    onRefresh={onRefresh}
                 />
             )}
         </tbody>

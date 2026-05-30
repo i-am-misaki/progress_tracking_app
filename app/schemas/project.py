@@ -51,3 +51,17 @@ class ProjectSummary(BaseModel):
     pic: Optional[UUID]
     status: ProjectStatus
     latest_progress: str
+
+
+class ProjectRowUpdate(BaseModel):
+    """
+    案件一覧画面の行更新のリクエストモデル
+
+    Attributes
+        project_uuid(UUID)    : 案件の UUID
+        eta(str)              : 納期
+        status(ProjectStatus) : 進捗状態
+    """
+    project_uuid: UUID
+    eta: str
+    status: ProjectStatus
