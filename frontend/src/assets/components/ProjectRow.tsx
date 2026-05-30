@@ -10,7 +10,21 @@ import { ProjectStatusList } from '../../types/status';
 // 行専用のコンポーネント
 export const ProjectRow = ({ project, key }: { project: Project; key: string; }) => {
   const [isEditMode, setIsEditMode] = useState(false);
+  console.log(project.eta)
 
+  const paddingZero = (rawDateStr: string) => {
+    if (!rawDateStr) return '';
+
+    // 年月日に分割し、０埋めを行う
+    const parts = rawDateStr.split('/');
+    if (parts.length !== 3) return '';
+
+    const [year, month, day] = parts;
+    const formattedMonth = month.padStart(2, '0');
+    const formattedDay = day.padStart(2, '0');
+
+    return `${year}-${formattedMonth}-${formattedDay}`;
+  }
 
 
   const handleStatusChange = (value: string) => {
@@ -32,10 +46,12 @@ export const ProjectRow = ({ project, key }: { project: Project; key: string; })
             {isEditMode ? (
                 <input
                     type="date"
-                    defaultValue={project.eta}
+                    defaultValue={paddingZero(project.eta)}
                 />
             ) : (
-              <p >{project.eta}</p>
+              <p className="pr-11 tracking-wide">
+                {paddingZero(project.eta).replaceAll('-', '/')}
+              </p>
             )}
         </td>
         {/* Status */}
