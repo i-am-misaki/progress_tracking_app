@@ -129,7 +129,7 @@ async def update_project_row(request: ProjectRowUpdate) -> None:
     if request.eta:
         eta = _convert_to_date(request.eta)
 
-    query_result.deliverty_date = eta
+    query_result.delivery_date = eta
     query_result.status = request.status
     try:
         db.commit()
