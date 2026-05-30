@@ -2,7 +2,7 @@ from typing import Optional
 from datetime import date, datetime
 
 from app.db.database import SessionLocal
-from app.schemas.project import ProjectRegistration, ProjectSummary, ProjectRowUpdate
+from app.schemas.project import ProjectRegistration, ProjectSummary, ProjectRowUpdate, Project
 from app.models.project import Project
 from app.models.user import User
 from app.models.project_assignment import ProjectAssignment
@@ -25,7 +25,7 @@ async def add_project(request: ProjectRegistration) -> None:
         eta = _convert_to_date(request.eta)
 
     # 案件登録
-    new_project = ProjectRegistration(
+    new_project = Project(
         title=request.project_name,
         summary=request.project_summary,
         priority=request.priority,
@@ -50,7 +50,7 @@ async def add_project(request: ProjectRegistration) -> None:
         new_process = ProcessTracking(
             content=request.progress,
             project_id=new_project.id,
-            # ログインユーザーのIDを格納
+            # ログインユーザーのIDを格納 要編集
             user_id=1
         )
         db.add(new_process)
@@ -101,7 +101,7 @@ async def get_projects() -> list[Project]:
             # Userオブジェクトがあればそのuuidを、なければ空文字を入れる
             pic=assigned_user.uuid if assigned_user else None,
             status=p.status,
-            latest_progress=latest_track.progress_content if latest_track else ""
+            latest_progress=latest_track.content if latest_track else ""
         )
         project_list.append(p_model)
 
@@ -149,6 +149,7 @@ def _convert_to_date(rawEta: Optional[str]) -> Optional[date]:
     Returns
         Optional[date] : datetime.date型に変換されたETA
     """
+    print(rawEta)
     if isinstance(rawEta, str):
         eta = datetime.strptime(rawEta, "%Y-%m-%d").date()
     else:
